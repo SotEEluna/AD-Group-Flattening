@@ -62,6 +62,22 @@ PS_ActiveDirectory_Flattening/
 └── README.md                      # Documentation
 
 ````
+## Configuration & Directories
+
+This project uses a configuration file to define all output and working directories.
+
+The following directories are **configured via `config/config.json`** and are created or used automatically during script execution.
+
+| Directory   | Description |
+|------------|-------------|
+| `backup/`      | Stores JSON backups of Active Directory group hierarchies |
+| `evaluation/`  | Contains evaluated and flattened group membership reports |
+| `log/`         | Stores execution logs with timestamps and log levels |
+| `result/`      | Contains comparison and final result files |
+
+All directory paths can be adjusted in the configuration file: `config/config.json`
+
+This Directorystructure allows flexible reuse of the script across different environments without modifying the code.
 
 ---
 
