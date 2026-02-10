@@ -1,5 +1,5 @@
 
-# PS Active Directory Flattening
+# AD-Group-Flattening
 
 PowerShell automation toolkit for analyzing, exporting, and flattening complex Active Directory group structures.
 
