@@ -1,0 +1,15 @@
+{
+    "Paths":{
+        "log":"\\log\\",
+        "logFile":"\\log\\active_log.txt",
+        "result":"\\result\\",
+        "backup":"\\backup\\",
+        "evaluation":"\\evaluation\\",
+        "modules":{
+            "backup":"\\modules\\backup.psm1",
+            "log":"\\modules\\log.psm1",
+            "evaluation":"\\modules\\evaluation.psm1",
+            "comparison": "\\modules\\comparison.psm1"
+        }
+    }
+}
