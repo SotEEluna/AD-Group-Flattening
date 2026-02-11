@@ -142,7 +142,7 @@ function Compare-AndRemoveSubGroups {
                 -Members $group.SamAccountName `
                 -Confirm:$false
 
-            Write-Log "U $($group.Name)" SUCCESS
+            Write-Log "Subgroup removed $($group.Name)" SUCCESS
             $removedGroups += [PSCustomObject]@{
                 samAccountName  = $group.SamAccountName
                 Name            = $group.Name
