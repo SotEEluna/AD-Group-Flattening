@@ -1,4 +1,4 @@
-# Erstelle eine Log-Datei um das Skriptablauf wie auch den Terminal output zu Dokumentieren
+# Create a log file to document the script execution as well as the terminal output.
 
 $config = Get-Content "$(Split-Path $PSScriptRoot -Parent)\config\config.json" | ConvertFrom-Json
 $logFile = "$(Split-Path $PSscriptRoot -Parent)$($config.Paths.logFile)"
@@ -38,7 +38,7 @@ function Rename-Logfile {
     )
 
     if (-not (Test-Path $logFile)) {
-        throw "Logdatei existiert nicht: $($logFile)"
+        throw "Log file doesnt exist: $($logFile)"
     }
 
     $path = "$(Split-Path $PSscriptRoot -Parent)$($config.Paths.log)"
@@ -48,7 +48,7 @@ function Rename-Logfile {
     try {
         if (Test-Path $targetPath) {
             Remove-Item -Path "$($targetPath)" -Force
-            Write-Log "Es wurde eine Duplikat Logdatei gefunden diese wird entfernt und durch die neue ersetzt."
+            Write-Log "A duplicate log file was found. It will be removed and replaced with the new one."
             Rename-Item -Path $logFile -NewName $newName -Force -ErrorAction Stop
 
         }
@@ -59,8 +59,8 @@ function Rename-Logfile {
         
         $logFile = Join-Path $path $newName
 
-        Write-Host "[SUCCESS]: Logdatei umbenannt in $newName" -ForegroundColor Green
-        "[$(Get-Date -Format "HH:mm:ss")][SUCCESS]: Logdatei erfolgreich umbenannt in $($newName)" | out-File -FilePath $logFile -Append
+        Write-Host "[SUCCESS]: Log file renamed in $newName" -ForegroundColor Green
+        "[$(Get-Date -Format "HH:mm:ss")][SUCCESS]: Log successfully renamed in $($newName)" | out-File -FilePath $logFile -Append
     }
     catch {
         
@@ -71,13 +71,13 @@ function Rename-Logfile {
 if (-not (Test-Path $logFile)) {
     
     New-Item -ItemType File -Path $logFile -Force | Out-Null
-    Write-Log "Logdatei erstellt: $($logFile)" INFO
-    Write-Log "Skript gestartet durch User: $($Env:USERNAME)"
+    Write-Log "Log file created: $($logFile)" INFO
+    Write-Log "Script started by user: $($Env:USERNAME)"
 }
 else {
     Clear-Content -Path $logFile -Force
-    Write-Log "Logdatei geleert: $($logFile)" INFO
-    Write-Log "Skript gestartet durch User: $($Env:USERNAME)"
+    Write-Log "Log file cleared: $($logFile)" INFO
+    Write-Log "Script started by user: $($Env:USERNAME)"
 }
 
 
