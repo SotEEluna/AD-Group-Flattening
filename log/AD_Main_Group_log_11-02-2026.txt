@@ -1,1 +1,46 @@
+[14:18:54][INFO]: Log file created: C:\CODE\AD-Group-Flattening\log\active_log.txt
+[14:18:54][INFO]: Script started by user: SotEEluna
+[14:18:54][INFO]: Enter a group name: 
+[14:18:58][INPUT]: Group name: AD_Main_Group
+[14:18:58][INFO]: Start by creating a backup of the group: AD_Main_Group
+[14:18:59][INFO]: Read current group structure: 'AD_Main_Group'
+[14:19:00][SUCCESS]: Backup of the group has been written.
+[14:19:00][SUCCESS]: Backup successfully created: C:\CODE\AD-Group-Flattening\backup\AD_Main_Group_11-02-2026.json
+[14:19:00][INFO]: --------------------------------------------------------------------
+[14:19:00][INFO]: 
+[14:19:00][INFO]: Start user evaluation of group: AD_Main_Group
+[14:19:00][INFO]: Investigate group: AD_Main_Group (Depth: 0)
+[14:19:00][INFO]: Investigate group: AD_Sub_Group (Depth: 1)
+[14:19:01][SUCCESS]: User evaluation finished. Result: C:\CODE\AD-Group-Flattening\evaluation\AD_Main_Group_auswertung_result.json
+[14:19:01][INFO]: --------------------------------------------------------------------
+[14:19:01][INFO]: 
+[14:19:01][INFO]: Start user comparison of the group: AD_Main_Group
+[14:19:01][INFO]: The following users have indirect permissions: 
+[14:19:01][INFO]: 
+[14:19:01][INFO]: lwagner Lisa Wagner
+[14:19:01][INFO]: tbecker Thomas Becker
+[14:19:01][INFO]: 
+[14:19:01][INPUT]: 2 indirectly permitted users were found.
+[14:19:01][INPUT]: Should these be permitted directly under the group: AD_Main_Group ?
+[14:19:18][INPUT]: Selection: Yes
+[14:19:18][INFO]: Start by assigning users to the group.
+[14:19:18][INFO]: 
+[14:19:18][SUCCESS]: User successfully permitted: lwagner Lisa Wagner
+[14:19:18][SUCCESS]: User successfully permitted: tbecker Thomas Becker
+[14:19:19][SUCCESS]: Result file created: C:\CODE\AD-Group-Flattening\result\AD_Main_Group_result_11-02-2026.csv
+[14:19:19][INFO]: --------------------------------------------------------------------
+[14:19:19][INFO]: 
+[14:19:19][INFO]: Start removing the sub-groups from AD_Main_Group
+[14:19:20][INFO]: The following subgroups were found:  
+[14:19:20][INFO]: 
+[14:19:20][INFO]: AD_Sub_Group
+[14:19:20][INFO]: 
+[14:19:20][INPUT]: 1 subgroups were found.
+[14:19:20][INPUT]: Should these be removed from gorup AD_Main_Group?
+[14:19:29][INPUT]: Selection: Yes
+[14:19:29][INFO]: Start by removing the subgroups:
+[14:19:29][INFO]: 
+[14:19:29][SUCCESS]: Subgroup removed AD_Sub_Group
+[14:19:30][SUCCESS]: CSV file created: C:\CODE\AD-Group-Flattening\result\AD_Main_Group_result_11-02-2026.csv
+[14:19:30][SUCCESS]: Log file successfully renamed in AD_Main_Group_log_11-02-2026.txt
 
