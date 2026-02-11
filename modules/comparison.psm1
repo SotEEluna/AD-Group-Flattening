@@ -81,7 +81,7 @@ function Compare-AndFlattenGroupUsers {
     $csvFile = Join-Path $outputPath "$($mainGroup)_result_$(Get-Date -Format "dd-MM-yyyy").csv"
     $addedUsers | Export-Csv -Path $csvFile -NoTypeInformation -Encoding UTF8 -Delimiter ";"
 
-    Write-Log "Result file erstellt: $($csvFile)" SUCCESS
+    Write-Log "Result file created: $($csvFile)" SUCCESS
 
 
 
