@@ -1,3 +1,5 @@
+# Create a Backup of the entered main group hierarchy with a max depth of 10.
+
 function Get-GroupTreeInternal {
     param(
         [Parameter(Mandatory)][string]$groupDN,
@@ -7,24 +9,24 @@ function Get-GroupTreeInternal {
     )
 
 
-    # MaxDepth Schutz
+    # MaxDepth protection
     if ($depth -ge $maxDepth) {
         return [PSCustomObject]@{
-            Name = "Maximale erlaubte Ebene erreicht: $($maxDepth)"
+            Name = "Maximum permitted depth reached: $($maxDepth)"
             Members = @()
         }
     }
 
-    # Zyklusprüfung nur innerhalb des aktuellen Pfads
+    # Loop detection at current path
     if ($path.Contains($groupDN)) {
         return [PSCustomObject]@{
-            Name    = "[SCHLEIFE erkannt]"
+            Name    = "[LOOP detected]"
             DN      = $groupDN
             Members = @()
         }
     }
 
-    # Pfad-Kopie für diesen Zweig
+    # Copy path for this branch
     $currentPath = [System.Collections.Generic.HashSet[string]]::new($Path)
     $null = $currentPath.Add($groupDN)
 
@@ -33,7 +35,7 @@ function Get-GroupTreeInternal {
     }
     catch {
         return [PSCustomObject]@{
-            Name = "UNBEKANNTE GRUPPE"
+            Name = "UNKNOWN GROUP"
             Error = $_.Exception.Message
             Members = @()
         }
@@ -52,7 +54,7 @@ function Get-GroupTreeInternal {
     catch {
         return [PSCustomObject]@{
             Name = $groupName
-            Error = "Mitglieder konnten nicht aufgelöst werden"
+            Error = "Members could not be resolved."
             Members = @()
         }
     }
@@ -95,15 +97,15 @@ function Get-GroupTree {
         $grp = Get-ADGroup -Identity $groupIdentity -ErrorAction Stop
     }
     catch {
-        Write-Log "Gruppe '$($groupIdentity)' konnte nicht gefunden werden" ERROR
-        Write-Log "Fehler: $($_.Exception.Message)"
+        Write-Log "Group: '$($groupIdentity)'could not be found." ERROR
+        Write-Log "Error: $($_.Exception.Message)"
         Rename-Logfile -groupName $Global:mainGroupName
         throw
     }
 
     $initalPath = [System.Collections.Generic.HashSet[string]]::new()
 
-    Write-Log "Lese die aktuelle Gruppenstruktur: '$($grp.Name)'"
+    Write-Log "Read current group structure '$($grp.Name)'"
 
     $tree = Get-GroupTreeInternal `
         -groupDN $grp.DistinguishedName `
@@ -125,7 +127,7 @@ function New-GroupBackup {
     try {
         if (-not (Test-Path -LiteralPath $outputDirectory)) {
             New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
-            Write-Log "Backup-Ordner erstellt: $($outputDirectory)" SUCCESS
+            Write-Log "Backup folder created: $($outputDirectory)" SUCCESS
         }
 
         $tree = Get-GroupTree -groupIdentity $groupIdentity -maxDepth $maxDepth
@@ -136,13 +138,13 @@ function New-GroupBackup {
 
         $tree | ConvertTo-Json -Depth 50 | Out-File -FilePath $file -Encoding utf8
 
-        Write-Log "Backup der Gruppe wurde geschrieben." SUCCESS
+        Write-Log "Backup of the group has been written." SUCCESS
         return $file
     }
     catch {
 
-        Write-Log "Fehler beim erstellen des Backups:" ERROR
-        Write-Log "Fehler: $($_.Exception.Message)" ERROR
+        Write-Log "Error creating backup:" ERROR
+        Write-Log "Error: $($_.Exception.Message)" ERROR
         Rename-Logfile -groupName $Global:mainGroupName
         throw
         
