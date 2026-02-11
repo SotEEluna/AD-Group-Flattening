@@ -1,6 +1,6 @@
 Clear-Host
 
-#region "Lade Config"
+#region "Load config"
     $config = Get-Content "$($PSScriptRoot)\config\config.json" | ConvertFrom-Json
 #endregion
 
@@ -13,44 +13,44 @@ Clear-Host
 
 #endregion
 
-#region "Globale Variablen"
+#region "Global variables"
 
-    # Variablen für das Backup und die Auswertungen
+    # Global variables for the backup and evaluation
     $Global:currentGroup = ""
     $Global:maxDepth = 10
     $Global:currentDepth = 0
 
 #endregion
 
-#region "Abfrage der "AD" Gruppe"
+#region "Userinput Maingroup"
 
-    Write-Log "Bitte den Gruppennamen eingeben: " INFO
-    Write-Host -ForegroundColor Cyan "[INPUT]: Gruppenname: " -NoNewline
+    Write-Log "Enter a group name" INFO
+    Write-Host -ForegroundColor Cyan "[INPUT]: Group name: " -NoNewline
     $Global:mainGroupName = Read-Host 
     Clear-Host
-    Write-Log "Gruppenname: $($Global:mainGroupName)" INPUT
+    Write-Log "Selected group name: $($Global:mainGroupName)" INPUT
 
 #endregion
 
-#region "Backup erstellen"
+#region "Create Backup"
 
 try {
-    Write-Log "Beginne mit dem erstellen des Backups der Gruppe: $($Global:mainGroupName)"
+    Write-Log "Start by creating a backup of the group: $($Global:mainGroupName)"
     $outputDir = "$($PSScriptRoot)$($config.Paths.backup)"
     $backupFile = New-GroupBackup -groupIdentity $Global:mainGroupName -outputDirectory $outputDir -maxDepth $Global:maxDepth
 
-    Write-Log "Backup erfolgreich: $($backupFile)" SUCCESS
+    Write-Log "Backup successfully created: $($backupFile)" SUCCESS
 }
 catch {
-    Write-Log "Skriptfehler" Error
-    Write-Log "Fehler: $($_.Exception.Message)" Error
+    Write-Log "Script error:" Error
+    Write-Log "Error: $($_.Exception.Message)" Error
     Rename-Logfile -groupName $Global:mainGroupName
     throw 
 }
 
 #endregion
 
-#region "Userauswertung der Gruppe"
+#region "User Evaluation"
 
     $evaluationOutput = "$($PSScriptRoot)$($config.Paths.evaluation)"
 
@@ -61,13 +61,13 @@ catch {
 
 #endregion
 
-#region "Vergleiche die User welche direkt und indirekt berechtigt sind"
+#region "Compare direct and indirect User"
 
     $resultOutput = "$($PSScriptRoot)$($config.Paths.result)"
 
     Write-Log "--------------------------------------------------------------------" INFO
     Write-Log ""
-    Write-Log "Starte User-Vergleich der Gruppe: $($Global:mainGroupName)" INFO
+    Write-Log "Start user comparison of the group: $($Global:mainGroupName)" INFO
     Compare-AndFlattenGroupUsers `
         -mainGroup $Global:mainGroupName `
         -evaluationFile $evaluationFile `
@@ -76,11 +76,11 @@ catch {
 
 #endregion
 
-#region "Entferne die Sub-Gruppen aus der Hauptgruppe"
+#region "Remove Subgroup"
 
     Write-Log "--------------------------------------------------------------------" INFO
     Write-Log ""
-    Write-Log "Starte das entfernen der Sub-Gruppen aus $($Global:mainGroupName)" INFO
+    Write-Log "Start removing the sub-groups from: $($Global:mainGroupName)" INFO
     Compare-AndRemoveSubGroups `
         -mainGroup $Global:mainGroupName `
         -outPutPath $resultOutput
@@ -89,4 +89,3 @@ catch {
 #endregion
 
 Rename-Logfile -groupName $Global:mainGroupName
-# Read-Host "Enter um das Skript zu beenden...."
