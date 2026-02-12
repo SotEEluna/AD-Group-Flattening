@@ -94,7 +94,7 @@ This Directorystructure allows flexible reuse of the script across different env
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/SotEEluna/PS_ActiveDirectory_Flattening.git
+git clone https://github.com/PWRScripting/PS_ActiveDirectory_Flattening.git
 cd PS_ActiveDirectory_Flattening
 ````
 
